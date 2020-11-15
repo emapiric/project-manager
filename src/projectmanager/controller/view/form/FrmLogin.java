@@ -43,15 +43,11 @@ public class FrmLogin extends javax.swing.JFrame {
         inputPassword = new projectmanager.controller.view.component.InputPasswordPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(188, 188, 255));
 
-        jPanel1.setBackground(new java.awt.Color(188, 188, 255));
-        jPanel1.setForeground(new java.awt.Color(188, 188, 255));
+        jPanel1.setForeground(new java.awt.Color(51, 51, 55));
 
         jLabel1.setFont(new java.awt.Font("Franklin Gothic Medium", 1, 24)); // NOI18N
         jLabel1.setText("Project Manager");
-
-        inputUsername.setBackground(new java.awt.Color(188, 188, 255));
 
         btnLogin.setText("Login");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -61,8 +57,6 @@ public class FrmLogin extends javax.swing.JFrame {
         });
 
         btnSignup.setText("Sign up");
-
-        inputPassword.setBackground(new java.awt.Color(188, 188, 255));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

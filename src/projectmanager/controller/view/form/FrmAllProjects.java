@@ -10,10 +10,12 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import projectmanager.controller.Controller;
 import projectmanager.domain.Project;
-import projectmanager.controller.view.component.ButtonColumn;
+import projectmanager.controller.view.component.ButtonEditor;
+import projectmanager.controller.view.component.ButtonRenderer;
 
 /**
  *
@@ -61,7 +63,7 @@ public class FrmAllProjects extends javax.swing.JFrame {
                 java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -167,22 +169,20 @@ public class FrmAllProjects extends javax.swing.JFrame {
 
     private void fillTblProjects() {
         List<Project> projects = Controller.getInstance().getAllProjects();
+        projects.add(new Project(1l, "p1", "desc1", 46l));
         DefaultTableModel model = (DefaultTableModel) tblProjects.getModel();
+        setButtonColumn(3,"View");
+        setButtonColumn(4,"Delete");
         for (Project project : projects) {
-            Object[] rowData = new Object[]{project.getId(), project.getName(), project.getOwnerId(), "Open", "Delete"};
+            Long projectId = project.getId();
+            Object[] rowData = new Object[]{projectId, project.getName(), project.getOwnerId(),projectId,projectId};
             model.addRow(rowData);
         }
     }
-    
-//    AbstractAction delete = new AbstractAction()
-//{
-//    public void actionPerformed(ActionEvent e)
-//    {
-//        JTable table = (JTable)e.getSource();
-//        int modelRow = Integer.valueOf( e.getActionCommand() );
-//        ((DefaultTableModel)table.getModel()).removeRow(modelRow);
-//    }
-//};
-// 
-//    ButtonColumn buttonColumn = new ButtonColumn(tblProjects, delete, 2);
+
+    private void setButtonColumn(int i, String label) {
+        tblProjects.getColumnModel().getColumn(i).setCellRenderer(new ButtonRenderer(label));
+        tblProjects.getColumnModel().getColumn(i).setCellEditor(new ButtonEditor(new JTextField(),label));
+    }
+
 }
