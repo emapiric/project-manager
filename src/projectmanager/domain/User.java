@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author EMA
  */
 public class User {
-    private Long id;
+    private int id;
     private String firstname;
     private String lastname;
     private String username;
@@ -22,7 +22,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstname, String lastname, String username, String password, String email) {
+    public User(int id, String firstname, String lastname, String username, String password, String email) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -31,7 +31,7 @@ public class User {
         this.email = email;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
@@ -55,7 +55,7 @@ public class User {
         return email;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

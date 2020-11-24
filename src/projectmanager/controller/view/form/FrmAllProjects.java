@@ -5,17 +5,14 @@
  */
 package projectmanager.controller.view.form;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
-import javax.swing.AbstractAction;
 import javax.swing.JDialog;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import projectmanager.controller.Controller;
 import projectmanager.domain.Project;
-import projectmanager.controller.view.component.ButtonEditor;
-import projectmanager.controller.view.component.ButtonRenderer;
+import projectmanager.domain.User;
+
 
 /**
  *
@@ -43,6 +40,10 @@ public class FrmAllProjects extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProjects = new javax.swing.JTable();
+        btnAdd = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
+        btnDetails = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jmiNewProject = new javax.swing.JMenuItem();
@@ -56,14 +57,14 @@ public class FrmAllProjects extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Name", "Owner", "Description", "Delete"
+                "ID", "Name", "Owner"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Long.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -75,6 +76,34 @@ public class FrmAllProjects extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tblProjects);
+
+        btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        btnRemove.setText("Remove");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
+
+        btnDetails.setText("Details");
+        btnDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDetailsActionPerformed(evt);
+            }
+        });
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
 
@@ -99,15 +128,31 @@ public class FrmAllProjects extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(73, 73, 73)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnRefresh))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAdd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRemove)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDetails)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRefresh))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
@@ -117,6 +162,43 @@ public class FrmAllProjects extends javax.swing.JFrame {
          JDialog frmProject = new FrmProject(this, true);
         frmProject.setVisible(true);
     }//GEN-LAST:event_jmiNewProjectActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        JDialog frmProject = new FrmProject(this, true);
+        frmProject.setVisible(true);
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        refresh();
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        int row = tblProjects.getSelectedRow();
+        if (row >=0) {
+            int confirmDialog = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this project?");
+            if (confirmDialog == 0) {
+               try {
+                    Controller.getInstance().deleteProject((int)tblProjects.getValueAt(row, 0));
+                    refresh();
+               } catch(Exception e) {
+                   JOptionPane.showMessageDialog(this, e.getMessage());
+               }
+            }
+        }
+    }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void btnDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailsActionPerformed
+        int row = tblProjects.getSelectedRow();
+        if (row >=0) {
+            try {
+                Project project = Controller.getInstance().getProjectById((int)tblProjects.getValueAt(row, 0));
+                JDialog frmProject = new FrmProject(this, true, project);
+                frmProject.setVisible(true);
+            } catch (Exception e) {
+                 JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnDetailsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -154,6 +236,10 @@ public class FrmAllProjects extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDetails;
+    private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnRemove;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -169,20 +255,17 @@ public class FrmAllProjects extends javax.swing.JFrame {
 
     private void fillTblProjects() {
         List<Project> projects = Controller.getInstance().getAllProjects();
-        projects.add(new Project(1l, "p1", "desc1", 46l));
         DefaultTableModel model = (DefaultTableModel) tblProjects.getModel();
-        setButtonColumn(3,"View");
-        setButtonColumn(4,"Delete");
         for (Project project : projects) {
-            Long projectId = project.getId();
-            Object[] rowData = new Object[]{projectId, project.getName(), project.getOwnerId(),projectId,projectId};
+            int projectId = project.getId();
+            Object[] rowData = new Object[]{projectId, project.getName(), project.getOwner().getUsername()};
             model.addRow(rowData);
         }
     }
 
-    private void setButtonColumn(int i, String label) {
-        tblProjects.getColumnModel().getColumn(i).setCellRenderer(new ButtonRenderer(label));
-        tblProjects.getColumnModel().getColumn(i).setCellEditor(new ButtonEditor(new JTextField(),label));
+    private void refresh() {
+        this.dispose();
+        new FrmAllProjects().setVisible(true);
     }
 
 }

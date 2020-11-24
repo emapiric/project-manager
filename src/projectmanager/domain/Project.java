@@ -12,26 +12,26 @@ import java.util.Objects;
  * @author EMA
  */
 public class Project {
-    private Long id;
+    private int id;
     private String name;
     private String description;
-    private Long ownerId;
+    private User owner;
 
     public Project() {
     }
 
-    public Project(Long id, String name, String description, Long ownerId) {
+    public Project(int id, String name, String description, User owner) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.ownerId = ownerId;
+        this.owner = owner;
     }
     
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -51,21 +51,21 @@ public class Project {
         this.description = description;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.id);
-        hash = 29 * hash + Objects.hashCode(this.name);
-        hash = 29 * hash + Objects.hashCode(this.description);
-        hash = 29 * hash + Objects.hashCode(this.ownerId);
+        hash = 79 * hash + this.id;
+        hash = 79 * hash + Objects.hashCode(this.name);
+        hash = 79 * hash + Objects.hashCode(this.description);
+        hash = 79 * hash + Objects.hashCode(this.owner);
         return hash;
     }
 
@@ -81,16 +81,16 @@ public class Project {
             return false;
         }
         final Project other = (Project) obj;
+        if (this.id != other.id) {
+            return false;
+        }
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
         if (!Objects.equals(this.description, other.description)) {
             return false;
         }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.ownerId, other.ownerId)) {
+        if (!Objects.equals(this.owner, other.owner)) {
             return false;
         }
         return true;
@@ -98,7 +98,7 @@ public class Project {
 
     @Override
     public String toString() {
-        return "Project{" + "id=" + id + ", name=" + name + ", description=" + description + ", ownerId=" + ownerId + '}';
+        return "Project{" + "id=" + id + ", name=" + name + ", description=" + description + ", owner=" + owner + '}';
     }
     
 }

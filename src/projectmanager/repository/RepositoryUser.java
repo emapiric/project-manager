@@ -19,9 +19,9 @@ public class RepositoryUser {
     public RepositoryUser() {
         this.users = new ArrayList<User>(){
             {
-                add(new User(1l, "Admin", "Admin","admin","admin","admin@gmail.com"));
-                add(new User(2l, "Admin2", "Admin2","admin2","admin2","admin2@gmail.com"));
-                add(new User(3l, "Admin3", "Admin3","admin3","admin3","admin3@gmail.com"));
+                add(new User(1, "Admin", "Admin","admin","admin","admin@gmail.com"));
+                add(new User(2, "Admin2", "Admin2","admin2","admin2","admin2@gmail.com"));
+                add(new User(3, "Admin3", "Admin3","admin3","admin3","admin3@gmail.com"));
             }
         };
     }
