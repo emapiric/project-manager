@@ -4,8 +4,12 @@
  * and open the template in the editor.
  */
 package projectmanager.controller.view.form;
+import java.awt.event.ActionListener;
+import javax.accessibility.AccessibleContext;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JRootPane;
 import projectmanager.controller.Controller;
 import projectmanager.controller.view.component.*;
 import projectmanager.controller.view.component.validator.impl.PasswordValidator;
@@ -23,7 +27,6 @@ public class FrmLogin extends javax.swing.JFrame {
     public FrmLogin() {
         initComponents();
         setLocationRelativeTo(null);
-        prepareComponents();
     }
 
     /**
@@ -50,11 +53,6 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel1.setText("Project Manager");
 
         btnLogin.setText("Login");
-        btnLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoginActionPerformed(evt);
-            }
-        });
 
         btnSignup.setText("Sign up");
 
@@ -109,21 +107,6 @@ public class FrmLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        inputUsername.getLblErrorValue().setText("");
-        try {
-            String username = inputUsername.getValue().toString();
-            String password = String.valueOf((char[])inputPassword.getValue());
-            User user = Controller.getInstance().login(username,password);
-            JOptionPane.showMessageDialog(this, "Welcome "+user.getFirstname()+" "+user.getLastname(), "Login", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-            new FrmAllProjects().setVisible(true);
-        } catch (Exception ex) {
-              System.out.println(ex.getMessage());
-              JOptionPane.showMessageDialog(this, ex.getMessage(),"Login error",JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnLoginActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -159,6 +142,28 @@ public class FrmLogin extends javax.swing.JFrame {
         });
     }
 
+
+    public void loginAddActionListener(ActionListener actionListener) {
+         btnLogin.addActionListener(actionListener);
+    }
+
+    public InputPasswordPanel getInputPassword() {
+        return inputPassword;
+    }
+
+    public void setInputPassword(InputPasswordPanel inputPassword) {
+        this.inputPassword = inputPassword;
+    }
+
+    public InputTextFieldPanel getInputUsername() {
+        return inputUsername;
+    }
+
+    public void setInputUsername(InputTextFieldPanel inputUsername) {
+        this.inputUsername = inputUsername;
+    }
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnSignup;
@@ -168,15 +173,4 @@ public class FrmLogin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
-    private void prepareComponents() {
-        inputUsername.setValidator(new RequiredStringValidator());
-        inputUsername.getLblText().setText("Username:");
-        inputUsername.getLblErrorValue().setText("");
-        
-        inputPassword.setValidator(new PasswordValidator());
-        inputPassword.getLblText().setText("Password:");
-        inputPassword.getLblErrorValue().setText("");      
-        
-    }
-    
 }

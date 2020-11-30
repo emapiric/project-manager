@@ -5,6 +5,7 @@
  */
 package projectmanager.main;
 
+import projectmanager.controller.view.coordinator.MainCoordinator;
 import projectmanager.controller.view.form.FrmLogin;
 
 /**
@@ -13,6 +14,6 @@ import projectmanager.controller.view.form.FrmLogin;
  */
 public class Main {
     public static void main(String[] args) {
-        new FrmLogin().setVisible(true);
+        MainCoordinator.getInstance().openLoginForm();
     }
 }

@@ -57,23 +57,65 @@ public class Controller {
     }
     
     public void addProject(Project project) throws Exception {
-        repositoryProject.add(project);
+        ((DBRepository)repositoryProject).connect();
+        try{
+            repositoryProject.add(project);
+            ((DBRepository)repositoryProject).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DBRepository)repositoryProject).rollback();
+            throw e;
+        }finally{
+            ((DBRepository)repositoryProject).disconnect();
+        }
     }
     
-    public List<Project> getAllProjects() {
-        return repositoryProject.getAll();
+    public List<Project> getAllProjects() throws Exception{
+        List<Project> products=null;
+        ((DBRepository)repositoryProject).connect();
+        try{
+            products = repositoryProject.getAll();
+            ((DBRepository)repositoryProject).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DBRepository)repositoryProject).rollback();
+            throw e;
+        }finally{
+            ((DBRepository)repositoryProject).disconnect();
+        }
+        return products;
     }
 
-    public void deleteProject(int projectId) throws Exception {
-       repositoryProject.delete(projectId);
+    public void deleteProject(Project project) throws Exception {
+       ((DBRepository)repositoryProject).connect();
+        try{
+            repositoryProject.delete(project);
+            ((DBRepository)repositoryProject).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DBRepository)repositoryProject).rollback();
+            throw e;
+        }finally{
+            ((DBRepository)repositoryProject).disconnect();
+        }
     }
     
-    public Project getProjectById(int projectId) throws Exception {
-        return repositoryProject.getById(projectId);
-    }
+//    public Project getProjectById(int projectId) throws Exception {
+//        return repositoryProject.getById(projectId);
+//    }
     
-    public void updateProject(Project project) throws Exception {
-        repositoryProject.update(project);
+    public void editProject(Project project) throws Exception {
+        ((DBRepository)repositoryProject).connect();
+        try{
+            ((DBRepository)repositoryProject).edit(project);
+            ((DBRepository)repositoryProject).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DBRepository)repositoryProject).rollback();
+            throw e;
+        }finally{
+            ((DBRepository)repositoryProject).disconnect();
+        }
     }
     
 }

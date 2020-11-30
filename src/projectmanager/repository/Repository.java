@@ -14,11 +14,7 @@ import java.util.List;
 public interface Repository<T> {
     List<T> getAll();
 
-    void add(T param) throws Exception;
-
-    void delete(int projectId) throws Exception;
-    
-    T getById(int id) throws Exception;
-    
-    void update(T param) throws Exception;
+   void add(T param) throws Exception;
+   void edit(T param) throws Exception;
+   void delete(T param)throws Exception;
 }
