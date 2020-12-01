@@ -54,13 +54,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="653" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="btnRemove" max="32767" attributes="0"/>
-                      <Component id="btnAdd" alignment="1" max="32767" attributes="0"/>
-                      <Component id="btnDetails" alignment="1" max="32767" attributes="0"/>
-                  </Group>
-                  <Component id="btnRefresh" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="btnRemove" max="32767" attributes="0"/>
+                  <Component id="btnAdd" alignment="1" max="32767" attributes="0"/>
+                  <Component id="btnDetails" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="51" max="32767" attributes="0"/>
           </Group>
@@ -70,15 +67,13 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnRemove" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnDetails" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="btnRefresh" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" min="-2" pref="386" max="-2" attributes="0"/>
               </Group>
@@ -143,11 +138,6 @@
     <Component class="javax.swing.JButton" name="btnDetails">
       <Properties>
         <Property name="text" type="java.lang.String" value="Details"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnRefresh">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Refresh"/>
       </Properties>
     </Component>
   </SubComponents>
