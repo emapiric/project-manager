@@ -94,7 +94,7 @@ public class InputTextFieldPanel extends javax.swing.JPanel implements GetValue{
         lblErrorValue.setText("");
         try {
             if (validator != null) validator.validate(txtValue.getText().trim());
-            return txtValue.getText();
+            return txtValue.getText().trim();
         } catch(ValidationException ve){
             lblErrorValue.setText(ve.getMessage());
             throw new Exception(ve.getMessage());

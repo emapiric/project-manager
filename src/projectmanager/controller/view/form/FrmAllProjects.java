@@ -6,16 +6,9 @@
 package projectmanager.controller.view.form;
 
 import java.awt.event.ActionListener;
-import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
+import javax.swing.JMenuItem;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import projectmanager.controller.Controller;
-import projectmanager.domain.Project;
-import projectmanager.domain.User;
-
 
 /**
  *
@@ -161,9 +154,38 @@ public class FrmAllProjects extends javax.swing.JFrame {
     public JButton getBtnDetails() {
         return btnDetails;
     }
+
+    public JButton getBtnAdd() {
+        return btnAdd;
+    }
+
+    public JButton getBtnRefresh() {
+        return btnRefresh;
+    }
+
+    public JButton getBtnRemove() {
+        return btnRemove;
+    }
+
+    public JMenuItem getJmiNewProject() {
+        return jmiNewProject;
+    }
     
-    public void getBtnDetailsAddActionListener(ActionListener actionListener) {
+    
+    public void btnDetailsActionListener(ActionListener actionListener) {
         btnDetails.addActionListener(actionListener);
+    }
+    
+    public void jmiNewProjectActionListener(ActionListener actionListener) {
+        jmiNewProject.addActionListener(actionListener);
+    }
+
+    public void btnAddActionListener(ActionListener actionListener) {
+        btnAdd.addActionListener(actionListener);
+    }
+
+    public void btnRemoveActionListener(ActionListener actionListener) {
+        btnRemove.addActionListener(actionListener);
     }
 
 }

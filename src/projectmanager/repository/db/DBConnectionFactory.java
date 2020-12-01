@@ -28,11 +28,11 @@ public class DBConnectionFactory {
     
     public Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
-            String sql = "INSERT INTO product VALUES (?,?,?,?,?,?)";
             String url = "jdbc:mysql://localhost:3306/projectmanager";
             String username = "root";
             String password = "root";
             connection = DriverManager.getConnection(url, username, password);
+            connection.setAutoCommit(false);
         }
         return connection;
     }

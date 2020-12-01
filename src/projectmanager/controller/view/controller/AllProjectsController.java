@@ -14,8 +14,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import projectmanager.controller.Controller;
+import projectmanager.controller.view.constant.Constants;
 import projectmanager.controller.view.coordinator.MainCoordinator;
 import projectmanager.controller.view.form.FrmAllProjects;
+import projectmanager.controller.view.form.component.table.ProjectTableModel;
 import projectmanager.domain.Project;
 
 /**
@@ -31,19 +33,50 @@ public class AllProjectsController {
     }
     
     private void addActionListener() {
-        frmAllProjects.getBtnDetailsAddActionListener(new ActionListener() {
+        frmAllProjects.jmiNewProjectActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainCoordinator.getInstance().openAddNewProjectForm();
+            }
+        });
+       frmAllProjects.btnAddActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainCoordinator.getInstance().openAddNewProjectForm();
+            }
+        });
+        frmAllProjects.btnDetailsActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = frmAllProjects.getTblProjects().getSelectedRow();
                 if (row >= 0) {
- //                   Project project = frmAllProjects.getTblProjects().getcompo
-//                    MainCoordinator.getInstance().addParam(Constants.PARAM_PRODUCT, product);
-//                    MainCoordinator.getInstance().openProductDetailsProductForm();
+                    Project project = ((ProjectTableModel) frmAllProjects.getTblProjects().getModel()).getProjectAt(row);
+                    MainCoordinator.getInstance().addParam(Constants.PARAM_PROJECT, project);
+                    MainCoordinator.getInstance().openProjectDetailsForm();
                 } else {
                     JOptionPane.showMessageDialog(frmAllProjects, "You must select a product", "PRODUCT DETAILS", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+        frmAllProjects.btnRemoveActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = frmAllProjects.getTblProjects().getSelectedRow();
+                if (row >= 0) {
+                    Project project = ((ProjectTableModel) frmAllProjects.getTblProjects().getModel()).getProjectAt(row);
+                    try {
+                        Controller.getInstance().deleteProject(project);
+                        JOptionPane.showMessageDialog(frmAllProjects, "Project deleted successfully!\n", "Delete project", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception ex) {
+                         JOptionPane.showMessageDialog(frmAllProjects, "Error deleting project!\n" + ex.getMessage(), "Delete project", JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(AllProjectsController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(frmAllProjects, "You must select a product", "PRODUCT DETAILS", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        
         
         frmAllProjects.addWindowListener(new WindowAdapter(){
             @Override
@@ -62,15 +95,14 @@ public class AllProjectsController {
 
     private void prepareView() {
         frmAllProjects.setTitle("View products");
-        fillTblProjects();
     }
 
     private void fillTblProjects() {
         List<Project> projects;
         try {
-           // projects = Controller.getInstance().getAllProducts();
-//            ProductTableModel ptm = new ProductTableModel(products);
-//            frmAllProjects.getTblProjects().setModel(ptm);
+            projects = Controller.getInstance().getAllProjects();
+            ProjectTableModel ptm = new ProjectTableModel(projects);
+            frmAllProjects.getTblProjects().setModel(ptm);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(frmAllProjects, "Error: " + ex.getMessage(), "ERROR DETAILS", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(AllProjectsController.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,4 +112,9 @@ public class AllProjectsController {
     public void refresh() {
         fillTblProjects();
     }
+
+    public FrmAllProjects getFrmAllProjects() {
+        return frmAllProjects;
+    }
+    
 }

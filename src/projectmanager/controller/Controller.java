@@ -9,8 +9,6 @@ import java.util.List;
 import projectmanager.domain.User;
 import projectmanager.domain.Project;
 import projectmanager.repository.Repository;
-import projectmanager.repository.RepositoryProject;
-import projectmanager.repository.RepositoryUser;
 import projectmanager.repository.db.DBRepository;
 import projectmanager.repository.db.impl.DBRepositoryProject;
 import projectmanager.repository.db.impl.DBRepositoryUser;
@@ -23,12 +21,12 @@ public class Controller {
     private static Controller controller;
     private final Repository<User> repositoryUser;
     private final Repository<Project> repositoryProject;
-    private User user;
+    //private User user;
 
     public Controller() {
         this.repositoryUser = new DBRepositoryUser();
         this.repositoryProject = new DBRepositoryProject();
-        this.user = new User();
+       // this.user = new User();
     }
     
     public static Controller getInstance() {
@@ -37,19 +35,19 @@ public class Controller {
         return controller;
     }
     
-        public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//        public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
     
     public User login(String username, String password) throws Exception {
         List<User> users = repositoryUser.getAll();
         for (User user: users) {
             if (user.getUsername().equals(username)&&user.getPassword().equals(password)) {
-                this.user = user;
+                //this.user = user;
                 return user;
             }
         }

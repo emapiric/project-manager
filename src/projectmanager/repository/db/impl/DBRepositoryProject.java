@@ -12,6 +12,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import projectmanager.controller.Controller;
+import projectmanager.controller.view.constant.Constants;
+import projectmanager.controller.view.coordinator.MainCoordinator;
 import projectmanager.domain.Project;
 import projectmanager.domain.User;
 import projectmanager.repository.db.DBConnectionFactory;
@@ -63,7 +65,9 @@ public class DBRepositoryProject implements DBRepository<Project>{
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, project.getName());
             statement.setString(2, project.getDescription());
-            statement.setInt(3, Controller.getInstance().getUser().getId());
+            User user = (User) MainCoordinator.getInstance().getParam(Constants.CURRENT_USER);
+            statement.setInt(3, user.getId());
+          //  statement.setInt(3, Controller.getInstance().getUser().getId());
             statement.executeUpdate();
             statement.close();
         } catch (Exception e) {

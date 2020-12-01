@@ -5,12 +5,11 @@
  */
 package projectmanager.controller.view.form;
 
-import java.awt.event.ActionEvent;
-import javax.swing.JOptionPane;
-import projectmanager.controller.Controller;
-import projectmanager.controller.view.component.validator.impl.PasswordValidator;
-import projectmanager.controller.view.component.validator.impl.RequiredStringValidator;
-import projectmanager.domain.Project;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import projectmanager.controller.view.component.InputTextAreaPanel;
+import projectmanager.controller.view.component.InputTextFieldPanel;
 
 /**
  *
@@ -18,7 +17,6 @@ import projectmanager.domain.Project;
  */
 public class FrmProject extends javax.swing.JDialog {
 
-    boolean update;
     /**
      * Creates new form FrmProject
      * @param parent
@@ -27,15 +25,6 @@ public class FrmProject extends javax.swing.JDialog {
     public FrmProject(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        prepareComponents();
-    }
-    
-    public FrmProject(java.awt.Frame parent, boolean modal, Project project) {
-        super(parent, modal);
-        initComponents();
-        prepareComponents();
-        loadProjectProperties(project);
-        update = true;
     }
     
     
@@ -58,11 +47,6 @@ public class FrmProject extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnSave.setText("Save");
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
-            }
-        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("New Project"));
 
@@ -122,87 +106,58 @@ public class FrmProject extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        Project project = new Project();
-        Controller controller = Controller.getInstance();
-        project.setName(inputName.getTxtValue().getText().trim());
-        project.setDescription(inputDescription.getTxtAreaValue().getText().trim());
-        project.setOwner(controller.getUser());
-        try {
-            if (update) {
-                project.setId(Integer.parseInt(inputId.getTxtValue().getText()));
-                controller.updateProject(project);
-            }
-            else 
-                controller.addProject(project);
-            JOptionPane.showMessageDialog(this, "Project successfully saved");
-            this.dispose();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-        }
-    }//GEN-LAST:event_btnSaveActionPerformed
+    public JButton getBtnSave() {
+        return btnSave;
+    }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmProject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmProject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmProject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmProject.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    public void setBtnSave(JButton btnSave) {
+        this.btnSave = btnSave;
+    }
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                FrmProject dialog = new FrmProject(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
+    public InputTextAreaPanel getInputDescription() {
+        return inputDescription;
+    }
+
+    public void setInputDescription(InputTextAreaPanel inputDescription) {
+        this.inputDescription = inputDescription;
+    }
+
+    public InputTextFieldPanel getInputId() {
+        return inputId;
+    }
+
+    public void setInputId(InputTextFieldPanel inputId) {
+        this.inputId = inputId;
+    }
+
+    public InputTextFieldPanel getInputName() {
+        return inputName;
+    }
+
+    public void setInputName(InputTextFieldPanel inputName) {
+        this.inputName = inputName;
+    }
+
+    public InputTextFieldPanel getInputOwner() {
+        return inputOwner;
+    }
+
+    public void setInputOwner(InputTextFieldPanel inputOwner) {
+        this.inputOwner = inputOwner;
+    }
+
+    public JPanel getjPanel1() {
+        return jPanel1;
+    }
+
+    public void setjPanel1(JPanel jPanel1) {
+        this.jPanel1 = jPanel1;
     }
     
-     private void prepareComponents() {
-        inputId.getLblText().setText("ID:");
-        inputId.getLblErrorValue().setText("");
-        inputId.getTxtValue().setEnabled(false);
-        
-        inputName.setValidator(new RequiredStringValidator());
-        inputName.getLblText().setText("Name:");
-        inputName.getLblErrorValue().setText("");
-        
-        inputDescription.setValidator(new RequiredStringValidator());
-        inputDescription.getLblText().setText("Description:");
-        inputDescription.getLblErrorValue().setText("");    
-        
-        inputOwner.getLblText().setText("Author:");
-        inputOwner.getTxtValue().setText(Controller.getInstance().getUser().getUsername());
-        inputOwner.getTxtValue().setEnabled(false);
-        inputOwner.getLblErrorValue().setText("");
-        
+    public void addSaveBtnActionListener(ActionListener actionListener) {
+        btnSave.addActionListener(actionListener);
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
@@ -213,9 +168,4 @@ public class FrmProject extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
-    private void loadProjectProperties(Project project) {
-        inputId.getTxtValue().setText(String.valueOf(project.getId()));
-        inputName.getTxtValue().setText(project.getName());
-        inputDescription.getTxtAreaValue().setText(project.getDescription());
-    }
 }

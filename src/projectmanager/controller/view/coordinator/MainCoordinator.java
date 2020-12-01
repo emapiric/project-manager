@@ -7,10 +7,14 @@ package projectmanager.controller.view.coordinator;
 
 import java.util.HashMap;
 import java.util.Map;
+import projectmanager.controller.view.constant.Constants;
 import projectmanager.controller.view.controller.AllProjectsController;
 import projectmanager.controller.view.controller.LoginController;
+import projectmanager.controller.view.controller.ProjectController;
 import projectmanager.controller.view.form.FrmAllProjects;
 import projectmanager.controller.view.form.FrmLogin;
+import projectmanager.controller.view.form.FrmProject;
+import projectmanager.view.form.util.FormMode;
 
 /**
  *
@@ -42,16 +46,16 @@ public class MainCoordinator {
         allProjectsController.openForm();
     }
 
-//    public void openAddNewProductForm() {
-//        ProductController productController = new ProductController(new FrmProduct(mainContoller.getFrmMain(), true));
-//        productController.openForm(FormMode.FORM_ADD);
-//    }
-//    public void openProductDetailsProductForm() {
-//        FrmProduct productDetails = new FrmProduct(mainContoller.getFrmMain(), true);
-//        ProductController productController = new ProductController(productDetails);
-//        productController.openForm(FormMode.FORM_VIEW);
-//        params.put(Constants.PARAM_PRODUCT,productDetails);
-//    }
+    public void openAddNewProjectForm() {
+        ProjectController projectController = new ProjectController(new FrmProject(allProjectsController.getFrmAllProjects(), true));
+        projectController.openForm(FormMode.FORM_ADD);
+    }
+    public void openProjectDetailsForm() {
+        FrmProject projectDetails = new FrmProject(allProjectsController.getFrmAllProjects(), true);
+        ProjectController projectController = new ProjectController(projectDetails);
+        projectController.openForm(FormMode.FORM_VIEW);
+        params.put(Constants.PARAM_PROJECT,projectDetails);
+    }
 
     public AllProjectsController getAllProjectsController() {
         return allProjectsController;

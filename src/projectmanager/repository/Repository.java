@@ -9,12 +9,11 @@ import java.util.List;
 
 /**
  *
- * @author EMA
+ * @author Ema
  */
 public interface Repository<T> {
     List<T> getAll();
-
-   void add(T param) throws Exception;
-   void edit(T param) throws Exception;
-   void delete(T param)throws Exception;
+    void add(T param) throws Exception;
+    void edit(T param) throws Exception;
+    void delete(T param)throws Exception;
 }
