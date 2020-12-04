@@ -39,6 +39,7 @@ public class FrmAllProjects extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
         btnRemove = new javax.swing.JButton();
         btnDetails = new javax.swing.JButton();
+        btnTasks = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jmiNewProject = new javax.swing.JMenuItem();
@@ -78,6 +79,8 @@ public class FrmAllProjects extends javax.swing.JFrame {
 
         btnDetails.setText("Details");
 
+        btnTasks.setText("Tasks");
+
         jMenu1.setText("File");
 
         jmiNewProject.setText("New project");
@@ -101,7 +104,8 @@ public class FrmAllProjects extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnTasks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -114,7 +118,9 @@ public class FrmAllProjects extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRemove)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDetails))
+                        .addComponent(btnDetails)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnTasks))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
@@ -130,6 +136,7 @@ public class FrmAllProjects extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDetails;
     private javax.swing.JButton btnRemove;
+    private javax.swing.JButton btnTasks;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -158,7 +165,10 @@ public class FrmAllProjects extends javax.swing.JFrame {
     public JMenuItem getJmiNewProject() {
         return jmiNewProject;
     }
-    
+
+    public JButton getBtnTasks() {
+        return btnTasks;
+    }
     
     public void btnDetailsActionListener(ActionListener actionListener) {
         btnDetails.addActionListener(actionListener);
@@ -174,6 +184,10 @@ public class FrmAllProjects extends javax.swing.JFrame {
 
     public void btnRemoveActionListener(ActionListener actionListener) {
         btnRemove.addActionListener(actionListener);
+    }
+    
+    public void btnTasksActionListener(ActionListener actionListener) {
+        btnTasks.addActionListener(actionListener);
     }
 
 }

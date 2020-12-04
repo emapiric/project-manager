@@ -8,9 +8,11 @@ package projectmanager.controller.view.coordinator;
 import java.util.HashMap;
 import java.util.Map;
 import projectmanager.controller.view.constant.Constants;
+import projectmanager.controller.view.controller.AllProjectTasksController;
 import projectmanager.controller.view.controller.AllProjectsController;
 import projectmanager.controller.view.controller.LoginController;
 import projectmanager.controller.view.controller.ProjectController;
+import projectmanager.controller.view.form.FrmAllProjectTasks;
 import projectmanager.controller.view.form.FrmAllProjects;
 import projectmanager.controller.view.form.FrmLogin;
 import projectmanager.controller.view.form.FrmProject;
@@ -56,7 +58,22 @@ public class MainCoordinator {
         projectController.openForm(FormMode.FORM_VIEW);
         params.put(Constants.PARAM_PROJECT,projectDetails);
     }
+    
+    public void openAllTasksForm() {
+        FrmAllProjectTasks allProjectTasks = new FrmAllProjectTasks();
+        AllProjectTasksController allProjectTasksController = new AllProjectTasksController(allProjectTasks);
+        allProjectTasksController.openForm();
+        params.put(Constants.PARAM_PROJECT_TASK,allProjectTasks);
+    }
+    
+    public void openAddNewProjectTaskForm() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
+    public void openProjectTaskDetailsForm() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     public AllProjectsController getAllProjectsController() {
         return allProjectsController;
     }
@@ -69,4 +86,5 @@ public class MainCoordinator {
     public Object getParam(String name) {
         return params.get(name);
     }
+
 }

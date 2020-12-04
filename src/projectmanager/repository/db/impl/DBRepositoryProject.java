@@ -67,7 +67,6 @@ public class DBRepositoryProject implements DBRepository<Project>{
             statement.setString(2, project.getDescription());
             User user = (User) MainCoordinator.getInstance().getParam(Constants.CURRENT_USER);
             statement.setInt(3, user.getId());
-          //  statement.setInt(3, Controller.getInstance().getUser().getId());
             statement.executeUpdate();
             statement.close();
         } catch (Exception e) {
@@ -91,35 +90,35 @@ public class DBRepositoryProject implements DBRepository<Project>{
         }
     }
 
-//    @Override
-//    public Project getById(int id) throws Exception {
-//        try {
-//            String sql = "SELECT * FROM project INNER JOIN user ON (project.userId = user.id) WHERE project.id = "+String.valueOf(id);
-//            Connection connection = DBConnectionFactory.getInstance().getConnection();
-//            Statement statement = connection.createStatement();
-//            ResultSet rs = statement.executeQuery(sql);
-//            Project project = new Project();
-//            if (rs.next()){
-//                project.setId(rs.getInt("project.id"));
-//                project.setName(rs.getString("project.name"));
-//                project.setDescription(rs.getString("project.description"));
-//                User user = new User();
-//                user.setId(rs.getInt("user.id"));
-//                user.setUsername(rs.getString("user.username"));
-//                user.setPassword(rs.getString("user.password"));
-//                user.setEmail(rs.getString("user.email"));
-//                user.setFirstname(rs.getString("user.firstname"));
-//                user.setLastname(rs.getString("user.lastname"));
-//                project.setOwner(user);
-//            }
-//            rs.close();
-//            statement.close();
-//            return project;
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            throw new Exception("Project doesn't exist.");
-//        }
-//    }
+    @Override
+    public Project getById(int id) throws Exception {
+        try {
+            String sql = "SELECT * FROM project INNER JOIN user ON (project.userId = user.id) WHERE project.id = ?";
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            Project project = new Project();
+            if (rs.next()){
+                project.setId(rs.getInt("project.id"));
+                project.setName(rs.getString("project.name"));
+                project.setDescription(rs.getString("project.description"));
+                User user = new User();
+                user.setId(rs.getInt("user.id"));
+                user.setUsername(rs.getString("user.username"));
+                user.setPassword(rs.getString("user.password"));
+                user.setEmail(rs.getString("user.email"));
+                user.setFirstname(rs.getString("user.firstname"));
+                user.setLastname(rs.getString("user.lastname"));
+                project.setOwner(user);
+            }
+            rs.close();
+            statement.close();
+            return project;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new Exception("Project doesn't exist.");
+        }
+    }
 
     @Override
     public void edit(Project project) throws Exception {
@@ -138,5 +137,4 @@ public class DBRepositoryProject implements DBRepository<Project>{
         }
     }
 
-    
 }

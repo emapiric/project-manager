@@ -54,7 +54,7 @@ public class AllProjectsController {
                     MainCoordinator.getInstance().addParam(Constants.PARAM_PROJECT, project);
                     MainCoordinator.getInstance().openProjectDetailsForm();
                 } else {
-                    JOptionPane.showMessageDialog(frmAllProjects, "You must select a product", "PRODUCT DETAILS", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frmAllProjects, "You must select a project", "PROJECT DETAILS", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -72,11 +72,24 @@ public class AllProjectsController {
                         Logger.getLogger(AllProjectsController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(frmAllProjects, "You must select a product", "PRODUCT DETAILS", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frmAllProjects, "You must select a project", "PROJECT DETAILS", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
         
+        frmAllProjects.btnTasksActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = frmAllProjects.getTblProjects().getSelectedRow();
+                if (row >= 0) {
+                    Project project = ((ProjectTableModel) frmAllProjects.getTblProjects().getModel()).getProjectAt(row);
+                    MainCoordinator.getInstance().addParam(Constants.PARAM_PROJECT, project);
+                    MainCoordinator.getInstance().openAllTasksForm();
+                } else {
+                    JOptionPane.showMessageDialog(frmAllProjects, "You must select a project", "PROJECT DETAILS", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
         
         frmAllProjects.addWindowListener(new WindowAdapter(){
             @Override
@@ -107,10 +120,6 @@ public class AllProjectsController {
             JOptionPane.showMessageDialog(frmAllProjects, "Error: " + ex.getMessage(), "ERROR DETAILS", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(AllProjectsController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public void refresh() {
-        fillTblProjects();
     }
 
     public FrmAllProjects getFrmAllProjects() {

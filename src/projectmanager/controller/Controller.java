@@ -8,9 +8,13 @@ package projectmanager.controller;
 import java.util.List;
 import projectmanager.domain.User;
 import projectmanager.domain.Project;
+import projectmanager.domain.ProjectTask;
+import projectmanager.domain.Task;
 import projectmanager.repository.Repository;
 import projectmanager.repository.db.DBRepository;
 import projectmanager.repository.db.impl.DBRepositoryProject;
+import projectmanager.repository.db.impl.DBRepositoryProjectTask;
+import projectmanager.repository.db.impl.DBRepositoryTask;
 import projectmanager.repository.db.impl.DBRepositoryUser;
 
 /**
@@ -21,12 +25,14 @@ public class Controller {
     private static Controller controller;
     private final Repository<User> repositoryUser;
     private final Repository<Project> repositoryProject;
-    //private User user;
+    private final Repository<ProjectTask> repositoryProjectTask;
+    private final Repository<Task> repositoryTask;
 
     public Controller() {
         this.repositoryUser = new DBRepositoryUser();
         this.repositoryProject = new DBRepositoryProject();
-       // this.user = new User();
+        this.repositoryProjectTask = new DBRepositoryProjectTask();
+        this.repositoryTask = new DBRepositoryTask();
     }
     
     public static Controller getInstance() {
@@ -35,22 +41,19 @@ public class Controller {
         return controller;
     }
     
-//        public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-    
     public User login(String username, String password) throws Exception {
         List<User> users = repositoryUser.getAll();
         for (User user: users) {
             if (user.getUsername().equals(username)&&user.getPassword().equals(password)) {
-                //this.user = user;
                 return user;
             }
         }
+        throw new Exception("Unknown user");
+    }
+    
+    public User getUserById(int id) throws Exception {
+        User user = repositoryUser.getById(id);
+        if (user != null) return user;
         throw new Exception("Unknown user");
     }
     
@@ -69,10 +72,10 @@ public class Controller {
     }
     
     public List<Project> getAllProjects() throws Exception{
-        List<Project> products=null;
+        List<Project> projects=null;
         ((DBRepository)repositoryProject).connect();
         try{
-            products = repositoryProject.getAll();
+            projects = repositoryProject.getAll();
             ((DBRepository)repositoryProject).commit();
         }catch(Exception e){
             e.printStackTrace();
@@ -81,7 +84,7 @@ public class Controller {
         }finally{
             ((DBRepository)repositoryProject).disconnect();
         }
-        return products;
+        return projects;
     }
 
     public void deleteProject(Project project) throws Exception {
@@ -98,10 +101,6 @@ public class Controller {
         }
     }
     
-//    public Project getProjectById(int projectId) throws Exception {
-//        return repositoryProject.getById(projectId);
-//    }
-    
     public void editProject(Project project) throws Exception {
         ((DBRepository)repositoryProject).connect();
         try{
@@ -114,6 +113,44 @@ public class Controller {
         }finally{
             ((DBRepository)repositoryProject).disconnect();
         }
+    }
+
+    public List<ProjectTask> getAllProjectTasks() throws Exception{
+        List<ProjectTask> projectTasks=null;
+        ((DBRepository)repositoryProjectTask).connect();
+        try{
+            projectTasks = repositoryProjectTask.getAll();
+            ((DBRepository)repositoryProjectTask).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DBRepository)repositoryProjectTask).rollback();
+            throw e;
+        }finally{
+            ((DBRepository)repositoryProjectTask).disconnect();
+        }
+        return projectTasks;
+    }
+
+    public void deleteProjectTask(ProjectTask projectTask) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Task getTaskById(int id) throws Exception{
+        Task task = repositoryTask.getById(id);
+        if (task != null) return task;
+        throw new Exception("Unknown task");
+    }
+
+    public void addProjectTask(ProjectTask projectTask) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void editProjectTask(ProjectTask projectTask) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<Task> getAllTasks() throws Exception{
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

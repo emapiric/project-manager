@@ -60,31 +60,31 @@ public class DBRepositoryUser implements DBRepository<User>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-//    @Override
-//    public User getById(int id) throws Exception {
-//        try {
-//            String sql = "SELECT * FROM user WHERE id = ?";  
-//            Connection connection = DBConnectionFactory.getInstance().getConnection();
-//            PreparedStatement statement = connection.prepareStatement(sql);
-//            statement.setInt(1, id);
-//            ResultSet rs = statement.executeQuery(sql);
-//            User user = new User();
-//            if(rs.next()) {
-//                user.setId(rs.getInt("id"));
-//                user.setFirstname(rs.getString("firstname"));
-//                user.setLastname(rs.getString("lastname"));
-//                user.setUsername(rs.getString("username"));
-//                user.setEmail(rs.getString("email"));
-//                user.setPassword(rs.getString("password"));
-//            }
-//            rs.close();
-//            statement.close();
-//            return user;
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            throw new Exception("User doesn't exist");
-//        }
-//    }
+    @Override
+    public User getById(int id) throws Exception {
+        try {
+            String sql = "SELECT * FROM user WHERE id = ?";  
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            User user = new User();
+            if(rs.next()) {
+                user.setId(rs.getInt("id"));
+                user.setFirstname(rs.getString("firstname"));
+                user.setLastname(rs.getString("lastname"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+            }
+            rs.close();
+            statement.close();
+            return user;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new Exception("User doesn't exist");
+        }
+    }
 
     @Override
     public void edit(User param) throws Exception {
