@@ -12,10 +12,12 @@ import projectmanager.controller.view.controller.AllProjectTasksController;
 import projectmanager.controller.view.controller.AllProjectsController;
 import projectmanager.controller.view.controller.LoginController;
 import projectmanager.controller.view.controller.ProjectController;
+import projectmanager.controller.view.controller.ProjectTaskController;
 import projectmanager.controller.view.form.FrmAllProjectTasks;
 import projectmanager.controller.view.form.FrmAllProjects;
 import projectmanager.controller.view.form.FrmLogin;
 import projectmanager.controller.view.form.FrmProject;
+import projectmanager.controller.view.form.FrmProjectTask;
 import projectmanager.view.form.util.FormMode;
 
 /**
@@ -27,6 +29,7 @@ public class MainCoordinator {
 
     private final AllProjectsController allProjectsController;
     private final Map<String, Object> params;
+    
 
     private MainCoordinator() {
         allProjectsController = new AllProjectsController(new FrmAllProjects());
@@ -63,15 +66,19 @@ public class MainCoordinator {
         FrmAllProjectTasks allProjectTasks = new FrmAllProjectTasks();
         AllProjectTasksController allProjectTasksController = new AllProjectTasksController(allProjectTasks);
         allProjectTasksController.openForm();
-        params.put(Constants.PARAM_PROJECT_TASK,allProjectTasks);
+        params.put(Constants.FORM_ALL_PROJECT_TASKS,allProjectTasks);
     }
     
     public void openAddNewProjectTaskForm() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ProjectTaskController projectTaskController = new ProjectTaskController(new FrmProjectTask((FrmAllProjectTasks)params.get(Constants.FORM_ALL_PROJECT_TASKS), true));
+        projectTaskController.openForm(FormMode.FORM_ADD);
     }
 
     public void openProjectTaskDetailsForm() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        FrmProjectTask taskDetails = new FrmProjectTask((FrmAllProjectTasks)params.get(Constants.FORM_ALL_PROJECT_TASKS), true);
+        ProjectTaskController projectTaskController = new ProjectTaskController(taskDetails);
+        projectTaskController.openForm(FormMode.FORM_VIEW);
+        params.put(Constants.PARAM_PROJECT_TASK,taskDetails);
     }
     
     public AllProjectsController getAllProjectsController() {

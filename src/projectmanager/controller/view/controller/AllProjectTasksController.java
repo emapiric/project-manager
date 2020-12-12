@@ -64,8 +64,11 @@ public class AllProjectTasksController {
                         Controller.getInstance().deleteProjectTask(projectTask);
                         JOptionPane.showMessageDialog(frmAllProjectTasks, "Project task deleted successfully!\n", "Delete project task", JOptionPane.INFORMATION_MESSAGE);
                     }catch (Exception ex) {
-                        JOptionPane.showMessageDialog(frmAllProjectTasks, "You must select a task.", "PROJECT TASK DETAILS", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(frmAllProjectTasks, "Error deleting task.", "PROJECT TASK DETAILS", JOptionPane.ERROR_MESSAGE);
                     }
+                }
+                else {
+                    JOptionPane.showMessageDialog(frmAllProjectTasks, "You must select a task.", "PROJECT TASK DETAILS", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

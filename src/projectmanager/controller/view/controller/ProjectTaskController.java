@@ -15,8 +15,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import projectmanager.controller.Controller;
 import projectmanager.controller.view.component.validator.impl.RequiredStringValidator;
+import projectmanager.controller.view.constant.Constants;
 import projectmanager.controller.view.coordinator.MainCoordinator;
 import projectmanager.controller.view.form.FrmProjectTask;
+import projectmanager.domain.Project;
 import projectmanager.domain.ProjectTask;
 import projectmanager.domain.Status;
 import projectmanager.domain.Task;
@@ -91,6 +93,9 @@ public class ProjectTaskController {
         frmProjectTask.getInputAuthor().getLblErrorValue().setText("");
         frmProjectTask.getInputAuthor().getTxtValue().setEnabled(false);
         
+        frmProjectTask.getInputTask().getLblText().setText("Task:");
+        frmProjectTask.getInputTask().getLblErrorValue().setText("");
+        
         frmProjectTask.getInputTaskDescription().getLblText().setText("Task description:");
         frmProjectTask.getInputTaskDescription().getLblErrorValue().setText("");
         frmProjectTask.getInputTaskDescription().getTxtAreaValue().setEnabled(false);
@@ -98,40 +103,99 @@ public class ProjectTaskController {
         frmProjectTask.getInputProjectTaskDescription().setValidator(new RequiredStringValidator());
         frmProjectTask.getInputProjectTaskDescription().getLblText().setText("Description:");
         frmProjectTask.getInputProjectTaskDescription().getLblErrorValue().setText("");
+        
+        frmProjectTask.getInputAssignee().getLblText().setText("Assignee:");
+        frmProjectTask.getInputAssignee().getLblErrorValue().setText("");
+        
+        frmProjectTask.getInputStatus().getLblText().setText("Status:");
+        frmProjectTask.getInputStatus().getLblErrorValue().setText("");
     }
     
     private void fillCbTask() {
-//        try {
-//            frmProjectTask.getInputTask().getCb().setModel(new DefaultComboBoxModel<>(Controller.getInstance().getAllTasks().toArray()));
-//            frmProjectTask.getInputTask().getCb().setSelectedIndex(-1);
-//            frmProjectTask.getInputTask().getCb().addItemListener(new ItemListener() {
-//                @Override
-//                public void itemStateChanged(ItemEvent e) {
-//                    if (e.getStateChange() == ItemEvent.SELECTED) {
-//                        Product product = (Product) e.getItem();
-//                        frmProjectTask.getTxtProductPrice().setText(String.valueOf(product.getPrice()));
-//                        frmProjectTask.getTxtProductMeasurementUnit().setText(product.getMeasurementUnit().toString());
-//                        frmProjectTask.getTxtProductQuantity().setText("1");
-//                        frmProjectTask.getTxtProductQuantity().grabFocus();
-//                        frmProjectTask.getTxtProductQuantity().setSelectionStart(0);
-//                    }
-//                }
-//            });
-//        } catch (Exception ex) {
-//            Logger.getLogger(InvoiceController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            frmProjectTask.getInputTask().getCb().setModel(new DefaultComboBoxModel<>(Controller.getInstance().getAllTasks().toArray()));
+            frmProjectTask.getInputTask().getCb().setSelectedIndex(0);
+            frmProjectTask.getInputTaskDescription().getTxtAreaValue().setText("Create registration form");
+            frmProjectTask.getInputTask().getCb().addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        Task task = (Task) e.getItem();
+                        frmProjectTask.getInputTaskDescription().getTxtAreaValue().setText(task.getDescription());
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getLogger(ProjectTaskController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void fillCbAssignee() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            frmProjectTask.getInputAssignee().getCb().setModel(new DefaultComboBoxModel<>(Controller.getInstance().getAllUsers().toArray()));
+            frmProjectTask.getInputAssignee().getCb().setSelectedIndex(0);
+            frmProjectTask.getInputAssignee().getCb().addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        User user = (User) e.getItem();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getLogger(ProjectTaskController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void fillCbStatus() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            frmProjectTask.getInputStatus().getCb().setModel(new DefaultComboBoxModel<>(Status.class.getEnumConstants()));
+            frmProjectTask.getInputStatus().getCb().setSelectedIndex(0);
+            frmProjectTask.getInputStatus().getCb().addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        Status status = (Status) e.getItem();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getLogger(ProjectTaskController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void setupComponents() {
-        
+        User currentUser = (User) MainCoordinator.getInstance().getParam(Constants.CURRENT_USER);
+        Project currentProject = (Project) MainCoordinator.getInstance().getParam(Constants.PARAM_PROJECT);
+        switch(formMode) {
+            case FORM_ADD:
+                frmProjectTask.getInputProject().getTxtValue().setText(currentProject.getId()+" "+currentProject.getName());
+                frmProjectTask.getInputAuthor().getTxtValue().setText(currentUser.getUsername());
+                break;
+            case FORM_VIEW:
+                ProjectTask projectTask = (ProjectTask) MainCoordinator.getInstance().getParam(Constants.PARAM_PROJECT_TASK);
+                frmProjectTask.getInputId().getTxtValue().setText(String.valueOf(projectTask.getId()));
+                frmProjectTask.getInputProject().getTxtValue().setText(projectTask.getProject().getId()+" "+projectTask.getProject().getName());
+                frmProjectTask.getInputAuthor().getTxtValue().setText(projectTask.getAuthor().getUsername());
+                frmProjectTask.getInputAssignee().getCb().setSelectedItem(projectTask.getAssignee());
+                frmProjectTask.getInputTask().getCb().setSelectedItem(projectTask.getTask());
+                frmProjectTask.getInputStatus().getCb().setSelectedItem(projectTask.getStatus());
+                frmProjectTask.getInputTaskDescription().getTxtAreaValue().setText(projectTask.getTask().getDescription());
+                frmProjectTask.getInputProjectTaskDescription().getTxtAreaValue().setText(projectTask.getDescription());
+                authorize(currentUser, projectTask);
+                break;
+        }
+    }
+
+    private void authorize(User currentUser, ProjectTask projectTask) {
+        if (currentUser.getId() != projectTask.getAuthor().getId()) {
+            frmProjectTask.getInputAssignee().setEnabled(false);
+            frmProjectTask.getInputTask().setEnabled(false);
+            frmProjectTask.getInputStatus().setEnabled(false);
+            frmProjectTask.getInputTaskDescription().setEnabled(false);
+            frmProjectTask.getInputProjectTaskDescription().setEnabled(false);
+            frmProjectTask.getBtnSave().setEnabled(false);
+        }
     }
 
 }

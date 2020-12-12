@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import projectmanager.controller.Controller;
 import projectmanager.controller.view.constant.Constants;
@@ -64,18 +65,62 @@ public class DBRepositoryProjectTask implements DBRepository<ProjectTask>{
     }
 
     @Override
-    public void add(ProjectTask param) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void add(ProjectTask projectTask) throws Exception {
+        try {
+            String sql = "INSERT INTO project_task (projectId, createdOn, description, taskId, assigneeProjectId, assigneeId, statusId, authorId) VALUES (?,?,?,?,?,?,?,?)";
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            Project project = (Project) MainCoordinator.getInstance().getParam(Constants.PARAM_PROJECT);
+            statement.setInt(1, project.getId());
+            statement.setDate(2, new java.sql.Date(new Date().getTime()));
+            statement.setString(3,projectTask.getDescription());
+            statement.setInt(4,projectTask.getTask().getId());
+            statement.setInt(5,project.getId());
+            statement.setInt(6,projectTask.getAssignee().getId());
+            statement.setInt(7, projectTask.getStatus().ordinal());
+            User user = (User) MainCoordinator.getInstance().getParam(Constants.CURRENT_USER);
+            statement.setInt(8, user.getId());
+            System.out.println(statement.toString());
+            statement.executeUpdate();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new Exception("Project task can't be saved");
+        }
     }
 
     @Override
-    public void edit(ProjectTask param) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void edit(ProjectTask projectTask) throws Exception {
+        try {
+            String sql = "UPDATE project_task SET description=?, taskId = ?, assigneeId=?, statusId = ? WHERE id = ?";
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,projectTask.getDescription());
+            statement.setInt(2,projectTask.getTask().getId());
+            statement.setInt(3,projectTask.getAssignee().getId());
+            statement.setInt(4, projectTask.getStatus().ordinal());
+            statement.setInt(5, projectTask.getId());
+            statement.executeUpdate();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new Exception("Project task can't be saved");
+        }
     }
 
     @Override
-    public void delete(ProjectTask param) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(ProjectTask projectTask) throws Exception {
+        try {
+            String sql = "DELETE FROM project_task WHERE id = ?";
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, projectTask.getId());
+            statement.executeUpdate();
+            statement.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new Exception("Project task can't be deleted");
+        }
     }
 
     @Override

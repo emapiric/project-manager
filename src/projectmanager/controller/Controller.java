@@ -51,6 +51,22 @@ public class Controller {
         throw new Exception("Unknown user");
     }
     
+    public List<User> getAllUsers() throws Exception{
+        List<User> users=null;
+        ((DBRepository)repositoryUser).connect();
+        try{
+            users = repositoryUser.getAll();
+            ((DBRepository)repositoryUser).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DBRepository)repositoryUser).rollback();
+            throw e;
+        }finally{
+            ((DBRepository)repositoryUser).disconnect();
+        }
+        return users;
+    }
+    
     public User getUserById(int id) throws Exception {
         User user = repositoryUser.getById(id);
         if (user != null) return user;
@@ -131,26 +147,68 @@ public class Controller {
         return projectTasks;
     }
 
-    public void deleteProjectTask(ProjectTask projectTask) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void deleteProjectTask(ProjectTask projectTask) throws Exception{
+        ((DBRepository)repositoryProjectTask).connect();
+        try{
+            repositoryProjectTask.delete(projectTask);
+            ((DBRepository)repositoryProjectTask).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DBRepository)repositoryProjectTask).rollback();
+            throw e;
+        }finally{
+            ((DBRepository)repositoryProjectTask).disconnect();
+        }
     }
 
+    public void addProjectTask(ProjectTask projectTask) throws Exception{
+        ((DBRepository)repositoryProjectTask).connect();
+        try{
+            repositoryProjectTask.add(projectTask);
+            ((DBRepository)repositoryProjectTask).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DBRepository)repositoryProjectTask).rollback();
+            throw e;
+        }finally{
+            ((DBRepository)repositoryProjectTask).disconnect();
+        }
+    }
+
+    public void editProjectTask(ProjectTask projectTask) throws Exception {
+        ((DBRepository)repositoryProjectTask).connect();
+        try{
+            ((DBRepository)repositoryProjectTask).edit(projectTask);
+            ((DBRepository)repositoryProjectTask).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DBRepository)repositoryProjectTask).rollback();
+            throw e;
+        }finally{
+            ((DBRepository)repositoryProjectTask).disconnect();
+        }
+    }
+
+    public List<Task> getAllTasks() throws Exception{
+         List<Task> tasks=null;
+        ((DBRepository)repositoryProjectTask).connect();
+        try{
+            tasks = repositoryTask.getAll();
+            ((DBRepository)repositoryProjectTask).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DBRepository)repositoryProjectTask).rollback();
+            throw e;
+        }finally{
+            ((DBRepository)repositoryProjectTask).disconnect();
+        }
+        return tasks;
+    }
+    
     public Task getTaskById(int id) throws Exception{
         Task task = repositoryTask.getById(id);
         if (task != null) return task;
         throw new Exception("Unknown task");
-    }
-
-    public void addProjectTask(ProjectTask projectTask) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void editProjectTask(ProjectTask projectTask) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public List<Task> getAllTasks() throws Exception{
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

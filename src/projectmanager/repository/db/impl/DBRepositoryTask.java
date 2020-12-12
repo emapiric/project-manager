@@ -8,6 +8,7 @@ package projectmanager.repository.db.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import projectmanager.domain.Task;
 import projectmanager.repository.db.DBConnectionFactory;
@@ -21,7 +22,26 @@ public class DBRepositoryTask implements DBRepository<Task>{
 
     @Override
     public List<Task> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            String sql = "SELECT * FROM task";
+            List<Task> tasks = new ArrayList<>();
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                Task task = new Task();
+                task.setId(rs.getInt("id"));
+                task.setName(rs.getString("name"));
+                task.setDescription(rs.getString("description"));
+                tasks.add(task);
+            }
+            rs.close();
+            statement.close();
+            return tasks;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     @Override
